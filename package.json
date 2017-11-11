@@ -1,0 +1,51 @@
+{
+    "name": "webpack-multipage-solution",
+    "version": "0.0.1",
+    "description": "Using webpack in multipage application",
+    "license": "MIT",
+    "author": {
+        "name": "travisxu",
+        "email": "xuzhengwei.amor@gmail.com"
+    },
+    "scripts": {
+        "dev": "concurrently \"npm run dev-client\" \"npm run dev-server\"",
+        "start": "npm run build && cross-env NODE_ENV=production node index.js",
+        "dev-server": "nodemon index.js --ignore src/assets/ --ignore public／",
+        "dev-client": "nodemon --watch config/webpack.config.js -- ./node_modules/.bin/webpack-dev-server --config config/webpack.config.js",
+        "clean": "rimraf public/assets",
+        "build": "npm run clean && cross-env NODE_ENV=production webpack --config config/webpack.config.js"
+    },
+    "devDependencies": {
+        "assets-webpack-plugin": "^3.5.1",
+        "babel-core": "^6.26.0",
+        "babel-loader": "^7.1.2",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-env": "^1.6.1",
+        "compression-webpack-plugin": "^1.0.1",
+        "concurrently": "^3.5.0",
+        "copy-webpack-plugin": "^4.2.0",
+        "cross-env": "^5.1.1",
+        "css-loader": "^0.28.7",
+        "extract-text-webpack-plugin": "^3.0.2",
+        "file-loader": "^1.1.5",
+        "html-loader": "^0.5.1",
+        "node-sass": "^4.6.0",
+        "nodemon": "^1.12.1",
+        "npm-run-all": "^4.1.2",
+        "optimize-css-assets-webpack-plugin": "^3.2.0",
+        "rimraf": "^2.6.2",
+        "sass-loader": "^6.0.6",
+        "style-loader": "^0.19.0",
+        "vue-loader": "^13.5.0",
+        "webpack": "^3.8.1",
+        "webpack-dev-server": "^2.9.4"
+    },
+    "dependencies": {
+        "express": "^4.16.2",
+        "express-handlebars": "^3.0.0",
+        "koa": "^2.4.1",
+        "koa-hbs": "^1.0.0",
+        "koa-router": "^7.2.1",
+        "koa-static": "^4.0.1"
+    }
+}
