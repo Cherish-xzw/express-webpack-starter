@@ -6,9 +6,9 @@
 * Hot reload with webpack dev server
 * CSS extraction
 * Sepreate common chunks and application code
-* Long term cache with contenthash in css and js files
-* Support .vue files and es2015+ syntax
-* Gzip compression when bundles are too big
+* Long term cache with contenthash in css and js files
+* Support .vue files and es2015+ syntax
+* Gzip compression when bundles are too big
 
 ## Usage 
 
@@ -24,6 +24,6 @@ $ yarn dev # start server with development mode
 $ yarn start # start server with production mode
 ```
 ## Lisence
-MIT
+MIT
 
 
