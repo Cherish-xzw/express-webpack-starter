@@ -13,7 +13,8 @@ app.use(
   hbs.middleware({
     viewPath: __dirname + "/views",
     layoutsPath: __dirname + "/views/layouts",
-    defaultLayout: "layout"
+    defaultLayout: "layout",
+    disableCache: !__PROD__
   })
 );
 app.use(serve(path.join(__dirname, "../public"), {
