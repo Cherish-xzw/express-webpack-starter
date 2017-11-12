@@ -24,12 +24,11 @@ const config = {
     path: resolve("public/assets"),
     publicPath: "/assets/",
     filename: IS_PROD ? "js/[name].[chunkhash].js" : "[name].js",
-    // works for lazy loading
-    chunkFilename: IS_PROD ? "js/[name].[chunkhash].js" : "[name].js"
+    chunkFilename: IS_PROD ? "js/[name].[chunkhash].js" : "[name].js" // works with lazy loading
   },
 
   resolve: {
-    extensions: [".js", ".json"]
+    extensions: ['.js', '.vue', '.json'],
   },
 
   module: {

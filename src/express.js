@@ -23,7 +23,8 @@ app.use(express.static(path.join(__dirname, '../public'), {
 }));
 app.use(asset({
   env: process.env.NODE_ENV,
-  prepend: __PROD__ ? "" : "http://localhost:8080/assets",
+  prepend: __PROD__ ? "" : "http://localhost:8080",
+  publicPath : "/assets/",
   manifestPath: path.join(__dirname, '../public/assets', 'manifest.json'),
 }));
 
