@@ -1,8 +1,7 @@
-const express = require("express");
-const exphbs = require("express-handlebars");
-const path = require("path");
-
-const asset = require('./middlewares/asset_express');
+import express from 'express';
+import exphbs from 'express-handlebars';
+import path from 'path';
+import asset from './middlewares/asset_express';
 
 const __PROD__ = process.env.NODE_ENV === "production";
 
