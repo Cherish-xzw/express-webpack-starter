@@ -6,6 +6,9 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
 import asset from './middlewares/asset_express';
+import locals from './middlewares/locals';
+import pages from './routes/pages';
+import api  from './routes/api';
 
 const __PROD__ = process.env.NODE_ENV === 'production';
 
@@ -37,23 +40,9 @@ app.use(
     manifestPath: path.join(__dirname, '../public/assets', 'manifest.json'),
   }),
 );
-
-app.get('/', (req, res) => {
-  res.render('home', {
-    title: 'home',
-  });
-});
-
-app.post('/api', async (req, res) => {
-  function getMessage() {
-    return new Promise((resolve) => resolve('hello world'));
-  }
-
-  const message = await getMessage();
-  res.json({
-    message,
-  });
-});
+app.use(locals());
+app.use(pages());
+app.use(api());
 
 app.listen(4000, () => {
   console.log('express app started at http://localhost:4000');

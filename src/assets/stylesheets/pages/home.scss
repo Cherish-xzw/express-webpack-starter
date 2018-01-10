@@ -1,3 +1,10 @@
 .home {
-  background-image: url('../images/webpack-logo.svg');
+  a {
+    color: #8ed6fb;
+    font-size: 18px;
+  }
+
+  .logo {
+    width: 400px;
+  }
 }
