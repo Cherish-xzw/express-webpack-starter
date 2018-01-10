@@ -8,7 +8,7 @@ import cookieParser from 'cookie-parser';
 import asset from './middlewares/asset_express';
 import locals from './middlewares/locals';
 import pages from './routes/pages';
-import api  from './routes/api';
+import api from './routes/api';
 
 const __PROD__ = process.env.NODE_ENV === 'production';
 
