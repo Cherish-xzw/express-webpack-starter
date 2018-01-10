@@ -2,7 +2,7 @@ const fs = require("fs");
 const assert = require("assert");
 
 module.exports = function(options) {
-  return function asset_path(assetName) {
+  return function assetPath(assetName) {
     assert(
       typeof assetName === "string",
       "assetName required, and must be a string"

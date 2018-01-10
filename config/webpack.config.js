@@ -116,7 +116,7 @@ const config = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: "vendors",
-      minChunks: function(module) {
+      minChunks(module) {
         // any required modules inside node_modules are extracted to vendor
         return (
           module.resource &&
