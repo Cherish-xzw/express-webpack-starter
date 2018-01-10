@@ -17,9 +17,8 @@
     "*.{js, json,md,graphql}": ["prettier --write", "git add --force"],
     "*.{css,less,styl,scss,sass,sss}": ["stylelint --fix", "git add --force"]
   },
-  "precommit": ["precommit"],
+  "precommit": ["lint:staged", "lint"],
   "scripts": {
-    "precommit": "lint-staged",
     "dev": "concurrently -k \"npm run dev:client\" \"npm run dev:server\"",
     "start": "npm run build && cross-env NODE_ENV=production node dist/app.js",
     "build": "npm-run-all clean:client clean:server --parallel build:*",
@@ -30,6 +29,7 @@
     "lint": "npm-run-all lint:js lint:css",
     "lint:js": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\"  .",
     "lint:css": "stylelint \"src/**/*.{css,less,styl,scss,sass,sss}\"",
+    "lint:staged": "lint-staged",
     "test:cover": "nyc npm run test",
     "dev:server":
       "nodemon --ignore src/assets/ --ignore public/ --ignore config/ --exec babel-node src/app.js",
