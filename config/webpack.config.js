@@ -17,18 +17,18 @@ const config = {
   context: resolve('src/assets/javascripts'),
 
   entry: {
-    main: ['babel-polyfill', './main.js'],
+    main: ['babel-polyfill', './main.js']
   },
 
   output: {
     path: resolve('public/assets'),
     publicPath: '/assets/',
     filename: IS_PROD ? 'js/[name].[chunkhash].js' : '[name].js',
-    chunkFilename: IS_PROD ? 'js/[name].[chunkhash].js' : '[name].js', // works with lazy loading
+    chunkFilename: IS_PROD ? 'js/[name].[chunkhash].js' : '[name].js' // works with lazy loading
   },
 
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.js', '.vue', '.json']
   },
 
   module: {
@@ -38,8 +38,8 @@ const config = {
         exclude: /node_modules/,
         use: ExtractTextPlugin.extract({
           use: [{ loader: 'css-loader' }, { loader: 'sass-loader' }],
-          fallback: 'style-loader',
-        }),
+          fallback: 'style-loader'
+        })
       },
       {
         test: /\.js$/,
@@ -56,22 +56,22 @@ const config = {
                       '>1%',
                       'last 4 versions',
                       'Firefox ESR',
-                      'not ie < 9',
-                    ],
-                  },
-                },
-              ],
-            ],
-          },
-        },
+                      'not ie < 9'
+                    ]
+                  }
+                }
+              ]
+            ]
+          }
+        }
       },
       {
         test: /\.html$/,
-        loader: 'html-loader',
+        loader: 'html-loader'
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
+        loader: 'vue-loader'
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -79,9 +79,9 @@ const config = {
           loader: 'file-loader',
           options: {
             limit: 10000,
-            name: 'images/[name].[hash:7].[ext]',
-          },
-        },
+            name: 'images/[name].[hash:7].[ext]'
+          }
+        }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -89,30 +89,30 @@ const config = {
           loader: 'file-loader',
           options: {
             limit: 10000,
-            name: 'fonts/[name].[hash:7].[ext]',
-          },
-        },
-      },
-    ],
+            name: 'fonts/[name].[hash:7].[ext]'
+          }
+        }
+      }
+    ]
   },
 
   plugins: [
     new CopyWebpackPlugin([
       {
         from: resolve('src/assets/images'),
-        to: resolve('public/assets/images'),
-      },
+        to: resolve('public/assets/images')
+      }
     ]),
     new ExtractTextPlugin({
-      filename: IS_PROD ? 'css/[name].[contenthash].css' : '[name].css',
+      filename: IS_PROD ? 'css/[name].[contenthash].css' : '[name].css'
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
-      _: 'lodash',
+      _: 'lodash'
     }),
     new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify('production') },
+      'process.env': { NODE_ENV: JSON.stringify('production') }
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendors',
@@ -123,16 +123,16 @@ const config = {
           /\.js$/.test(module.resource) &&
           module.resource.indexOf(path.join(__dirname, '../node_modules')) === 0
         );
-      },
-    }),
-  ],
+      }
+    })
+  ]
 };
 
 if (!IS_PROD) {
   config.devtool = 'cheap-module-eval-source-map';
   config.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin()
   );
 }
 
@@ -143,40 +143,40 @@ if (IS_PROD) {
       compress: {
         unused: true,
         dead_code: true,
-        warnings: false,
-      },
+        warnings: false
+      }
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new AssetsWebpackPlugin({
       filename: 'manifest.json',
       path: resolve('public/assets'),
-      prettyPrint: true,
+      prettyPrint: true
     }),
     // extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
-      chunks: ['vendors'],
+      chunks: ['vendors']
     }),
     new CompressionPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
-      minRatio: 0.8,
+      minRatio: 0.8
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({
       cssProcessorOptions: {
-        safe: true,
-      },
-    }),
+        safe: true
+      }
+    })
   );
 
   // https://webpack.js.org/configuration/performance
   config.performance = {
-    hints: 'warning',
+    hints: 'warning'
   };
 }
 

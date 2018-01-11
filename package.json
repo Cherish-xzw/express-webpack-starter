@@ -13,8 +13,8 @@
     "email": "xuzhengwei.amor@gmail.com"
   },
   "lint-staged": {
-    "*.{js,jsx}": ["eslint --no-ignore --fix", "git add --force"],
-    "*.{js, json,md,graphql}": ["prettier --write", "git add --force"],
+    "*.{js}": ["eslint --no-ignore --fix", "git add --force"],
+    "*.{js,json,md}": ["prettier --write", "git add --force"],
     "*.{css,less,styl,scss,sass,sss}": ["stylelint --fix", "git add --force"]
   },
   "precommit": ["lint:staged", "lint"],
@@ -43,10 +43,11 @@
     "build:server":
       "cross-env BABEL_ENV=production babel src -d dist --ignore src/assets --copy-files -s",
     "release:copy":
-      "mkdir -p release/$npm_package_name && shx cp -r package.json dist/ public/ release/$npm_package_name",
-    "release:deps": "cd release/$npm_package_name && npm install --production",
+      "cross-env-shell \"shx mkdir -p release/$npm_package_name && shx cp -r package.json dist/ public/ release/$npm_package_name\"",
+    "release:deps":
+      "cross-env-shell \"cd release/$npm_package_name && npm install --production\"",
     "release:package":
-      "cd release && tar -zcvf $npm_package_name.tar.gz $npm_package_name"
+      "cross-env-shell \"cd release && tar -zcvf $npm_package_name.tar.gz $npm_package_name\""
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.1",
