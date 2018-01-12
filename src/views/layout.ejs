@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title><%=title%></title>
+    <link rel="stylesheet" href="<%= asset_path('main.css') %>">
+    <% if(production){ %>
+    <script src="<%= asset_path('manifest.js') %>"></script>
+    <% } %>
+    <script src="<%= asset_path('vendors.js')  %>"></script>
+    <script src="<%= asset_path('main.js')  %>"></script>
+</head>
+<body>
+    <%-body%>
+</body>
+</html>

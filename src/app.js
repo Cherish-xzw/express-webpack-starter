@@ -1,6 +1,6 @@
 import './polyfills';
 import express from 'express';
-import exphbs from 'express-handlebars';
+import partials from 'express-partials';
 import path from 'path';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -14,20 +14,14 @@ const __PROD__ = process.env.NODE_ENV === 'production';
 
 const app = express();
 
-app.set('views', path.resolve(__dirname, './views'));
-app.set('view engine', '.hbs');
-app.engine(
-  '.hbs',
-  exphbs({
-    layoutsDir: `${__dirname}/views/layouts`,
-    defaultLayout: 'layout',
-    extname: '.hbs',
-  }),
-);
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.use(partials());
 app.use(
   express.static(path.join(__dirname, '../public'), {
-    maxage: 1000 * 60 * 60 * 24 * 30, // a month
-  }),
+    maxage: 1000 * 60 * 60 * 24 * 30 // a month
+  })
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -37,8 +31,8 @@ app.use(
     env: process.env.NODE_ENV,
     prepend: __PROD__ ? '' : 'http://localhost:8080',
     publicPath: '/assets/',
-    manifestPath: path.join(__dirname, '../public/assets', 'manifest.json'),
-  }),
+    manifestPath: path.join(__dirname, '../public/assets', 'manifest.json')
+  })
 );
 app.use(locals());
 app.use(pages());
