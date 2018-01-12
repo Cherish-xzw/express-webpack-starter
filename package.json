@@ -1,5 +1,5 @@
 {
-  "name": "webpack-multipage-solution",
+  "name": "express-webpack-start",
   "version": "0.0.1",
   "description": "Using webpack in multipage application",
   "license": "MIT",
@@ -20,7 +20,8 @@
   "precommit": ["lint:staged", "lint"],
   "scripts": {
     "dev": "concurrently -k \"npm run dev:client\" \"npm run dev:server\"",
-    "start": "npm run build && cross-env NODE_ENV=production node dist/app.js",
+    "start":
+      "npm run build && cross-env NODE_ENV=production node dist/server.js",
     "build": "npm-run-all clean:client clean:server --parallel build:*",
     "release":
       "npm-run-all build clean:release release:copy release:deps release:package",
@@ -32,7 +33,7 @@
     "lint:staged": "lint-staged",
     "test:cover": "nyc npm run test",
     "dev:server":
-      "nodemon --ignore src/assets/ --ignore public/ --ignore config/ --exec babel-node src/app.js",
+      "cross-env DEBUG=app:* nodemon --ignore src/assets/ --ignore public/ --ignore config/ --exec babel-node src/server.js",
     "dev:client":
       "nodemon --watch config/webpack.config.js -- ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config config/webpack.config.js",
     "clean:client": "rimraf public/assets",
@@ -99,10 +100,12 @@
     "body-parser": "^1.18.2",
     "compression": "^1.7.1",
     "cookie-parser": "^1.4.3",
+    "debug": "^3.1.0",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "express-partials": "^0.3.0",
     "moment": "^2.20.1",
+    "pretty-error": "^2.1.1",
     "source-map-support": "^0.5.0"
   }
 }

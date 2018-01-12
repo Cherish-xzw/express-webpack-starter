@@ -1,4 +1,3 @@
-import './polyfills';
 import express from 'express';
 import partials from 'express-partials';
 import bodyParser from 'body-parser';
@@ -7,6 +6,7 @@ import compression from 'compression';
 import path from 'path';
 
 import locals from './middlewares/locals';
+import errorHandlers from './middlewares/error_handler';
 import pages from './routes/pages';
 import api from './routes/api';
 
@@ -18,7 +18,7 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// registe application middleware
+// register application middleware
 app.use(
   express.static(path.join(__dirname, '../public'), {
     maxage: 1000 * 60 * 60 * 24 * 30 // a month
@@ -40,10 +40,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(pages());
-app.use(api());
-
-app.listen(4000, () => {
-  console.log('express app started at http://localhost:4000');
-});
+app.use('/api', api());
+app.use(errorHandlers());
 
 export default app;
