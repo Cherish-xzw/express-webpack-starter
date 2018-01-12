@@ -1,11 +1,11 @@
 import './polyfills';
 import express from 'express';
 import partials from 'express-partials';
-import path from 'path';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
+import compression from 'compression';
+import path from 'path';
 
-import asset from './middlewares/asset_express';
 import locals from './middlewares/locals';
 import pages from './routes/pages';
 import api from './routes/api';
@@ -17,24 +17,28 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(partials());
+
+// registe application middleware
 app.use(
   express.static(path.join(__dirname, '../public'), {
     maxage: 1000 * 60 * 60 * 24 * 30 // a month
   })
 );
+app.use(
+  locals({
+    asset: {
+      env: process.env.NODE_ENV,
+      prepend: __PROD__ ? '' : 'http://localhost:8080',
+      publicPath: '/assets/',
+      manifestPath: path.join(__dirname, '../public/assets', 'manifest.json')
+    }
+  })
+);
+app.use(compression());
+app.use(partials());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(
-  asset({
-    env: process.env.NODE_ENV,
-    prepend: __PROD__ ? '' : 'http://localhost:8080',
-    publicPath: '/assets/',
-    manifestPath: path.join(__dirname, '../public/assets', 'manifest.json')
-  })
-);
-app.use(locals());
 app.use(pages());
 app.use(api());
 

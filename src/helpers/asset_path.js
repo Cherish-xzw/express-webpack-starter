@@ -1,15 +1,15 @@
 const fs = require('fs');
 const assert = require('assert');
 
-module.exports = function(options) {
+module.exports = function assetHelper(options) {
   return function assetPath(assetName) {
     assert(
       typeof assetName === 'string',
-      'assetName required, and must be a string',
+      'assetName required, and must be a string'
     );
     assert(
       assetName.split.length > 1,
-      'assetName should be similar to application.css or application.js',
+      'assetName should be similar to application.css or application.js'
     );
 
     const name = assetName.split('.')[0];
