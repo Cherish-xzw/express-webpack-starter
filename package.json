@@ -1,5 +1,5 @@
 {
-  "name": "TgH5WebServer",
+  "name": "express-webpack-starter",
   "version": "0.0.1",
   "description": "Using webpack in multipage application",
   "license": "MIT",
@@ -107,6 +107,7 @@
     "express-partials": "^0.3.0",
     "moment": "^2.20.1",
     "pretty-error": "^2.1.1",
+    "jquery": "^3.2.1",
     "source-map-support": "^0.5.0"
   }
 }

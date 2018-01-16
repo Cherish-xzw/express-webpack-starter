@@ -1,1 +1,3 @@
-console.log('hello world');
+export default function home() {
+  console.log('hello world');
+}

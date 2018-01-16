@@ -8,11 +8,13 @@
   "env": {
     "node": true,
     "mocha": true,
-    "browser": true
+    "browser": true,
+    "jquery": true
   },
 
   "rules": {
     "import/first":"off",
-    "no-underscore-dangle":"off"
+    "no-underscore-dangle":"off",
+    "consistent-return": "off"
   }
 }
