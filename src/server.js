@@ -1,5 +1,5 @@
-#!/usr/bin/env node
-/* eslint no-use-before-define : off */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-console */
 
 /**
  * Module dependencies.
@@ -8,12 +8,12 @@ import './polyfills';
 import app from './app';
 import http from 'http';
 
-const debug = require('debug')('app:server');
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.HTTP_PORT || '3000');
+const host = process.env.HTTP_IP || 'localhost';
 app.set('port', port);
 
 /**
@@ -26,7 +26,7 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port, host);
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -82,6 +82,5 @@ function onError(error) {
 
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string' ? `${addr}` : `${addr.port}`;
-  debug(`express app started at http://localhost:${bind}`);
+  console.log(`express app started at http://${addr.address}:${addr.port}`);
 }

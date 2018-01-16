@@ -6,7 +6,7 @@ pe.skipPackage('express');
 
 module.exports = () =>
   function errorHandler(err, req, res) {
-    /* eslint no-console : off */
+    /* eslint-disable no-console */
     console.error(pe.render(err));
     // set locals, only providing error in development
     res.locals.message = err.message;

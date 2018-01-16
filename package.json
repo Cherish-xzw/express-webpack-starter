@@ -1,8 +1,9 @@
 {
-  "name": "express-webpack-start",
+  "name": "TgH5WebServer",
   "version": "0.0.1",
   "description": "Using webpack in multipage application",
   "license": "MIT",
+  "main": "dist/server.js",
   "engines": {
     "node": ">=6.3",
     "npm": ">=3.10"
@@ -33,7 +34,7 @@
     "lint:staged": "lint-staged",
     "test:cover": "nyc npm run test",
     "dev:server":
-      "cross-env DEBUG=app:* nodemon --ignore src/assets/ --ignore public/ --ignore config/ --exec babel-node src/server.js",
+      "cross-env DEBUG=app:* nodemon --watch src/ --exec babel-node src/server.js",
     "dev:client":
       "nodemon --watch config/webpack.config.js -- ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config config/webpack.config.js",
     "clean:client": "rimraf public/assets",
