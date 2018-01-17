@@ -16,7 +16,7 @@
 First of all, you should clone this repo
 
 ```sh
-git clone https://github.com/Cherish-xzw/express-webpack-starter
+git clone --depth=1 https://github.com/Cherish-xzw/express-webpack-starter MyAwesomeApp
 ```
 
 After that, you can run

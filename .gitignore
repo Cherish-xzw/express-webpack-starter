@@ -61,6 +61,8 @@ typings/
 .next
 
 .DS_Store
+.vscode
+.idea/
 public/assets/
 dist/
 release/
