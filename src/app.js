@@ -6,7 +6,6 @@ import compression from 'compression';
 import path from 'path';
 
 import locals from './middlewares/locals';
-import errorHandlers from './middlewares/error_handler';
 import pages from './routes/pages';
 import api from './routes/api';
 
@@ -36,11 +35,32 @@ app.use(
 );
 app.use(compression());
 app.use(partials());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(pages());
 app.use('/api', api());
-app.use(errorHandlers());
+
+// catch 404 and forward to error handler
+app.use((req, res, next) => {
+  const err = new Error(`Not Found ${req.originalUrl}`);
+  err.status = 404;
+  next(err);
+});
+
+// error handler
+app.use((err, req, res) => {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
 
 export default app;
