@@ -9,8 +9,6 @@ import locals from './middlewares/locals';
 import pages from './routes/pages';
 import api from './routes/api';
 
-const __PROD__ = process.env.NODE_ENV === 'production';
-
 const app = express();
 
 // view engine setup
@@ -27,7 +25,6 @@ app.use(
   locals({
     asset: {
       env: process.env.NODE_ENV,
-      prepend: __PROD__ ? '' : 'http://localhost:8080',
       publicPath: '/assets/',
       manifestPath: path.join(__dirname, '../public/assets', 'manifest.json')
     }
@@ -44,6 +41,19 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(pages());
 app.use('/api', api());
+
+// proxy the webpack assets directory to the webpack-dev-server.
+// It is only intended for use in development.
+if (app.get('env') === 'development') {
+  /* eslint-disable  global-require , import/no-extraneous-dependencies */
+  const proxy = require('http-proxy-middleware');
+  app.use(
+    '/assets',
+    proxy({
+      target: 'http://localhost:8080'
+    })
+  );
+}
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

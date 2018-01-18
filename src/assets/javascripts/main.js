@@ -18,6 +18,12 @@ $(document).ready(() => {
   switch (page) {
     case 'home':
       home();
+      import(/* webpackChunkName: "common" */ './common')
+        .then(common => common.default)
+        .then(common => {
+          common();
+        })
+        .catch(() => 'An error occurred while loading the component');
       break;
     default:
       throw new Error('No page found.');

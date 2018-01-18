@@ -24,7 +24,7 @@ const config = {
     path: resolve('public/assets'),
     publicPath: '/assets/',
     filename: IS_PROD ? 'js/[name].[chunkhash].js' : '[name].js',
-    chunkFilename: IS_PROD ? 'js/[name].[chunkhash].js' : '[name].js' // works with lazy loading
+    chunkFilename: IS_PROD ? 'js/[name].[chunkhash].js' : '[name].chunk.js' // works with lazy loading
   },
 
   resolve: {
@@ -60,7 +60,8 @@ const config = {
                     ]
                   }
                 }
-              ]
+              ],
+              'stage-2'
             ]
           }
         }

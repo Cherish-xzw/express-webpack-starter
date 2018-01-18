@@ -1,1 +1,3 @@
-console.log('common');
+export default function() {
+  console.log('common');
+}

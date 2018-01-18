@@ -15,7 +15,7 @@ module.exports = function assetHelper(options) {
     const name = assetName.split('.')[0];
     const suffix = assetName.split('.')[1];
 
-    let url = `${options.prepend}`;
+    let url = `${options.prepend || ''}`;
 
     if (options.env !== 'production') {
       url += `${options.publicPath}${name}.${suffix}`;
