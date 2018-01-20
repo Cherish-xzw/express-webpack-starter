@@ -9,8 +9,6 @@ env:
 install:
   - npm install
 
-before_script:
-  - npm run release
-
 script:
-  - 'cd release/express-webpack-starter && nohup node dist/server.js & && curl localhost:3000'
+  - npm test
+  - npm run release

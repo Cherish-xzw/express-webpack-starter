@@ -1,5 +1,7 @@
 # express-webpack-starter
 
+[![Build Status](https://travis-ci.org/Cherish-xzw/express-webpack-starter.svg?branch=master)](https://travis-ci.org/Cherish-xzw/express-webpack-starter)
+
 > express-webpack-starter shows how to use webpack in multipage application with express.
 
 ## Features
