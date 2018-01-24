@@ -13,7 +13,7 @@ import http from 'http';
  */
 
 const port = normalizePort(process.env.HTTP_PORT || '3000');
-const host = process.env.HTTP_IP || 'localhost';
+const host = process.env.HTTP_IP || '0.0.0.0';
 app.set('port', port);
 
 /**

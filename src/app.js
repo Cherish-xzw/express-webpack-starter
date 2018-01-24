@@ -50,7 +50,7 @@ if (app.get('env') === 'development') {
   app.use(
     '/assets',
     proxy({
-      target: 'http://localhost:8080'
+      target: 'http://localhost:3808'
     })
   );
 }

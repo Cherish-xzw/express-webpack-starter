@@ -79,7 +79,7 @@ const config = {
         use: {
           loader: 'url-loader',
           options: {
-            limit: 2048
+            limit: 10000
           }
         }
       },
@@ -133,6 +133,10 @@ if (!IS_PROD) {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   );
+  config.devServer = {
+    host: '0.0.0.0',
+    port: '3808'
+  }
 }
 
 if (IS_PROD) {
