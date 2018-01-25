@@ -8,16 +8,31 @@
     "node": ">=6.3",
     "npm": ">=3.10"
   },
-  "browserslist": [">1%", "last 4 versions", "Firefox ESR", "not ie < 9"],
+  "browserslist": [
+    ">1%",
+    "last 4 versions",
+    "Firefox ESR",
+    "not ie < 9"
+  ],
   "author": {
     "name": "travisxu",
     "email": "xuzhengwei.amor@gmail.com"
   },
   "lint-staged": {
-    "*.{js}": ["eslint --no-ignore --fix","prettier --write", "git add --force"],
-    "*.{css,less,styl,scss,sass,sss}": ["stylelint --fix", "git add --force"]
+    "*.{js}": [
+      "eslint --no-ignore --fix",
+      "prettier --write",
+      "git add --force"
+    ],
+    "*.{css,less,styl,scss,sass,sss}": [
+      "stylelint --fix",
+      "git add --force"
+    ]
   },
-  "precommit": ["lint:staged", "lint"],
+  "precommit": [
+    "lint:staged",
+    "lint"
+  ],
   "scripts": {
     "dev": "concurrently -k \"npm run dev:client\" \"npm run dev:server\"",
     "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
@@ -87,6 +102,7 @@
     "supertest": "^3.0.0",
     "url-loader": "^0.6.2",
     "vue-loader": "^13.5.0",
+    "vue-template-compiler": "^2.5.13",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
   },

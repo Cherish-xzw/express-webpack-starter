@@ -28,16 +28,22 @@ const config = {
   },
 
   resolve: {
+    alias: {
+      vue$: "vue/dist/vue.esm.js"
+    },
     extensions: ['.js', '.vue', '.json']
   },
 
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.scss$/,
         exclude: /node_modules/,
         use: ExtractTextPlugin.extract({
-          use: [{ loader: 'css-loader' }, { loader: 'sass-loader' }],
+          use: [{
+            loader: 'css-loader'
+          }, {
+            loader: 'sass-loader'
+          }],
           fallback: 'style-loader'
         })
       },
@@ -97,12 +103,10 @@ const config = {
   },
 
   plugins: [
-    new CopyWebpackPlugin([
-      {
-        from: resolve('src/assets/images'),
-        to: resolve('public/assets/images')
-      }
-    ]),
+    new CopyWebpackPlugin([{
+      from: resolve('src/assets/images'),
+      to: resolve('public/assets/images')
+    }]),
     new ExtractTextPlugin({
       filename: IS_PROD ? 'css/[name].[contenthash].css' : '[name].css'
     }),
@@ -111,7 +115,9 @@ const config = {
       jQuery: 'jquery'
     }),
     new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify('production') }
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendors',
