@@ -114,11 +114,6 @@ const config = {
       $: 'jquery',
       jQuery: 'jquery'
     }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
-    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendors',
       minChunks(module) {
@@ -148,6 +143,11 @@ if (!IS_PROD) {
 if (IS_PROD) {
   config.devtool = 'source-map';
   config.plugins.push(
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
+    }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         unused: true,
