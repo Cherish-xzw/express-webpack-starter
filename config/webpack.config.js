@@ -67,7 +67,8 @@ const config = {
                   }
                 }
               ],
-              'stage-2'
+              'stage-2',
+              'react'
             ]
           }
         }

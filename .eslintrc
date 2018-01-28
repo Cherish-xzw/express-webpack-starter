@@ -17,6 +17,9 @@
     "no-underscore-dangle":"off",
     "consistent-return": "off",
     "linebreak-style":"off",
-    "no-new":"off"
+    "no-new":"off",
+    "react/jsx-filename-extension": "off",
+    "react/jsx-tag-spacing": "off",
+    "react/prefer-stateless-function": "off"
   }
 }
