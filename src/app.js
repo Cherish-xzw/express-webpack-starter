@@ -24,9 +24,8 @@ app.use(
 app.use(
   locals({
     asset: {
-      env: process.env.NODE_ENV,
       publicPath: '/assets/',
-      manifestPath: path.join(__dirname, '../public/assets', 'manifest.json')
+      // prepend: '//cdn.upchina.com' // If assets have been uploaded to cdn
     }
   })
 );

@@ -7,6 +7,7 @@
 import './polyfills';
 import app from './app';
 import http from 'http';
+import fs from 'fs';
 
 /**
  * Get port from environment and store in Express.
@@ -15,6 +16,15 @@ import http from 'http';
 const port = normalizePort(process.env.HTTP_PORT || '3000');
 const host = process.env.HTTP_IP || '0.0.0.0';
 app.set('port', port);
+
+/**
+ * Cache the assets manifest
+ */
+
+if (app.get('env') === "production") {
+  const content = fs.readFileSync("public/assets/manifest.json", "utf8");
+  app.set('assetsManifest', JSON.parse(content))
+}
 
 /**
  * Create HTTP server.
