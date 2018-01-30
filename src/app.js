@@ -15,6 +15,8 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// use before static middleware to compress static files
+app.use(compression());
 // register application middleware
 app.use(
   express.static(path.join(__dirname, '../public'), {
@@ -29,7 +31,6 @@ app.use(
     }
   })
 );
-app.use(compression());
 app.use(partials());
 app.use(
   bodyParser.urlencoded({

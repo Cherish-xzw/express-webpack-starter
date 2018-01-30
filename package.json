@@ -36,7 +36,7 @@
   "scripts": {
     "dev": "concurrently -k \"npm run dev:client\" \"npm run dev:server\"",
     "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
-    "build": "npm-run-all clean:client clean:server --parallel build:*",
+    "build": "npm-run-all clean:* --parallel build:*",
     "release": "npm-run-all build clean:release release:copy release:deps release:package",
     "test": "mocha -r babel-register -r should --exit",
     "clean": "npm-run-all --parallel clean:*",
