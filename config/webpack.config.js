@@ -36,13 +36,23 @@ const config = {
 
   module: {
     rules: [{
-        test: /\.scss$/,
+        test: /\.less$/,
         exclude: /node_modules/,
         use: ExtractTextPlugin.extract({
           use: [{
             loader: 'css-loader'
           }, {
-            loader: 'sass-loader'
+            loader: 'less-loader'
+          }],
+          fallback: 'style-loader'
+        })
+      },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: ExtractTextPlugin.extract({
+          use: [{
+            loader: 'css-loader'
           }],
           fallback: 'style-loader'
         })

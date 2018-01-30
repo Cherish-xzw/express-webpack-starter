@@ -1,4 +1,4 @@
-import '../stylesheets/application.scss';
+import '../stylesheets/application.less';
 
 import jQuery from 'jquery';
 
