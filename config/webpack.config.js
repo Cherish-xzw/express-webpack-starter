@@ -59,7 +59,11 @@ const config = {
       },
       {
         test: /\.js$/,
-        exclude: /(node_modules|vendor\/assets)/,
+        include: [
+          resolve('src'),
+          // webpack-dev-server#1090 for Safari
+          /node_modules\/webpack-dev-server/
+        ],
         use: {
           loader: 'babel-loader',
           options: {
@@ -140,7 +144,7 @@ const config = {
 };
 
 if (!IS_PROD) {
-  config.devtool = 'cheap-module-eval-source-map';
+  config.devtool = 'cheap-module-source-map';
   config.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
