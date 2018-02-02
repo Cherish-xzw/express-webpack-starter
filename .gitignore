@@ -67,3 +67,4 @@ public/assets/
 dist/
 release/
 package-lock.json
+webpack-report/
