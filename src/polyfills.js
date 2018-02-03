@@ -4,4 +4,5 @@ if (process.env.TAF_CONFIG) {
 }
 if (process.env.NODE_ENV === 'production') {
   require('source-map-support/register');
+  require('babel-polyfill');
 }
