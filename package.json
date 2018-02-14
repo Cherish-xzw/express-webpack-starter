@@ -41,7 +41,7 @@
     "test": "mocha -r babel-register -r should --exit",
     "clean": "rimraf public/assets dist release",
     "lint": "npm-run-all lint:js lint:css",
-    "lint:js": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\"  .",
+    "lint:js": "eslint src --ignore-pattern src/proxy",
     "lint:css": "stylelint \"src/**/*.{css,less,styl,scss,sass,sss}\"",
     "lint:staged": "lint-staged",
     "test:cover": "nyc npm run test",
