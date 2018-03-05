@@ -6,6 +6,7 @@ const AssetsWebpackPlugin = require('assets-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const { BundleAnalyzerPlugin }  = require("webpack-bundle-analyzer");
+const autoprefixer = require("autoprefixer");
 const pkg = require('../package.json');
 
 const IS_PROD = process.env.NODE_ENV === 'production';
@@ -37,26 +38,45 @@ const config = {
   },
 
   module: {
-    rules: [{
-        test: /\.less$/,
-        exclude: /node_modules/,
+    rules: [
+      {
+        test: /\.css$/,
         use: ExtractTextPlugin.extract({
-          use: [{
-            loader: 'css-loader'
-          }, {
-            loader: 'less-loader'
-          }],
-          fallback: 'style-loader'
+          fallback: "style-loader",
+          use: [
+            { loader: "css-loader", options: { importLoaders: 1 } },
+            {
+              loader: "postcss-loader",
+              options: {
+                plugins: [
+                  autoprefixer({
+                    browsers: pkg.browserslist
+                  })
+                ]
+              }
+            }
+          ]
         })
       },
       {
-        test: /\.css$/,
+        test: /\.less$/,
         exclude: /node_modules/,
         use: ExtractTextPlugin.extract({
-          use: [{
-            loader: 'css-loader'
-          }],
-          fallback: 'style-loader'
+          fallback: "style-loader",
+          use: [
+            { loader: "css-loader" },
+            {
+              loader: "postcss-loader",
+              options: {
+                plugins: [
+                  autoprefixer({
+                    browsers: pkg.browserslist
+                  })
+                ]
+              }
+            },
+            { loader: "less-loader" },
+          ]
         })
       },
       {
@@ -64,7 +84,7 @@ const config = {
         include: [
           resolve('src'),
           // webpack-dev-server#1090 for Safari
-          /node_modules\/webpack-dev-server/
+          resolve('/node_modules/webpack-dev-server/')
         ],
         use: {
           loader: 'babel-loader',
