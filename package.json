@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Using webpack in multipage application",
   "license": "MIT",
+  "path": "/",
   "main": "dist/server.js",
   "engines": {
     "node": ">=6.3",

@@ -13,7 +13,11 @@ module.exports = function assetHelper(req, opt = {
       if (opt.prepend) {
         url += opt.prepend;
       }
-      url += req.app.get('assetsManifest')[name][suffix];
+      if( name in req.app.get('assetsManifest') ) {
+        url += req.app.get('assetsManifest')[name][suffix];
+      } else {
+        url += `${opt.publicPath}${name}.${suffix}`;
+      }
     }
     return url;
   };

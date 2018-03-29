@@ -25,7 +25,7 @@ const config = {
 
   output: {
     path: resolve('public/assets'),
-    publicPath: '/assets/',
+    publicPath: `${pkg.path === '/' ? '' : pkg.path}/assets/`,
     filename: IS_PROD ? 'js/[name].[chunkhash].js' : '[name].js',
     chunkFilename: IS_PROD ? 'js/[name].[chunkhash].js' : '[name].chunk.js' // works with lazy loading
   },

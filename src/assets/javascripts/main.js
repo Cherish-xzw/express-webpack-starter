@@ -10,7 +10,7 @@ document.getElementById("app").innerHTML =
     <a href="http://expressjs.com/" target="_blank">Express</a>
 </p>
 <h2>Learn More</h2>
-<a href="/about">About</a>
+<a href="${__publicPath === '/' ? '' : __publicPath }/about">About</a>
 `
 
 /* Uncomment these lines to get Vue.js support */
