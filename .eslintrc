@@ -12,6 +12,10 @@
     "jquery": true
   },
 
+  "globals": {
+    "__publicPath": true
+  },
+
   "rules": {
     "import/first":"off",
     "no-underscore-dangle":"off",

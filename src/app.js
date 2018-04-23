@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import path from 'path';
+import pkg from '../package.json';
 
 import locals from './middlewares/locals';
 import pages from './routes/pages';
@@ -19,6 +20,7 @@ app.set('view engine', 'ejs');
 app.use(compression());
 // register application middleware
 app.use(
+  `${pkg.path === '/' ? '' : pkg.path}`,
   express.static(path.join(__dirname, '../public'), {
     maxage: 1000 * 60 * 60 * 24 * 30 // a month
   })
@@ -26,7 +28,7 @@ app.use(
 app.use(
   locals({
     asset: {
-      publicPath: '/assets/',
+      publicPath: `${pkg.path === '/' ? '' : pkg.path}/assets/`,
       // prepend: '//cdn.upchina.com' // If assets have been uploaded to cdn
     }
   })
@@ -39,8 +41,8 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(pages());
-app.use('/api', api());
+app.use(`${pkg.path === '/' ? '' : pkg.path}`, pages());
+app.use(`${pkg.path === '/' ? '' : pkg.path}/api`, api());
 
 // proxy the webpack assets directory to the webpack-dev-server.
 // It is only intended for use in development.
@@ -48,7 +50,7 @@ if (app.get('env') === 'development') {
   /* eslint-disable  global-require , import/no-extraneous-dependencies */
   const proxy = require('http-proxy-middleware');
   app.use(
-    '/assets',
+    `${pkg.path === '/' ? '' : pkg.path}/assets/`,
     proxy({
       target: 'http://localhost:3808'
     })
