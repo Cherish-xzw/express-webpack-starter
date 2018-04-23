@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const AssetsWebpackPlugin = require('assets-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const { BundleAnalyzerPlugin }  = require("webpack-bundle-analyzer");
 const pkg = require('../package.json');
 
@@ -69,6 +70,7 @@ const config = {
         use: {
           loader: 'babel-loader',
           options: {
+            plugins: ['lodash'],
             presets: [
               [
                 'env',
@@ -96,6 +98,7 @@ const config = {
             js : {
               loader: 'babel-loader',
               options: {
+                plugins: ['lodash'],
                 presets: [
                   [
                     'env',
@@ -143,6 +146,7 @@ const config = {
     new ExtractTextPlugin({
       filename: IS_PROD ? 'css/[name].[contenthash].css' : '[name].css'
     }),
+    new LodashModuleReplacementPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'
