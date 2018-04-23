@@ -8,6 +8,7 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const { BundleAnalyzerPlugin }  = require("webpack-bundle-analyzer");
 const autoprefixer = require("autoprefixer");
+const vuxLoader = require('vux-loader');
 const pkg = require('../package.json');
 
 const IS_PROD = process.env.NODE_ENV === 'production';
@@ -85,25 +86,23 @@ const config = {
         include: [
           resolve('src'),
           // webpack-dev-server#1090 for Safari
-          resolve('/node_modules/webpack-dev-server/')
+          resolve('node_modules/webpack-dev-server/')
         ],
-        use: {
-          loader: 'babel-loader',
-          options: {
-            plugins: ['lodash'],
-            presets: [
-              [
-                'env',
-                {
-                  targets: {
-                    browsers: pkg.browserslist
-                  }
+        loader: 'babel-loader',
+        options: {
+          plugins: ['lodash'],
+          presets: [
+            [
+              'env',
+              {
+                targets: {
+                  browsers: pkg.browserslist
                 }
-              ],
-              'stage-2',
-              'react'
-            ]
-          }
+              }
+            ],
+            'stage-2',
+            'react'
+          ]
         }
       },
       {
@@ -254,4 +253,9 @@ if (IS_PROD) {
   };
 }
 
-module.exports = config;
+module.exports = vuxLoader.merge(config, {
+  options: {},
+  plugins: [{
+    name: 'vux-ui'
+  }]
+});

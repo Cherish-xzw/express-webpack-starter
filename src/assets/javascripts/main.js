@@ -1,43 +1,46 @@
 // import stylesheets
 import "../stylesheets/application.less";
 
-document.getElementById("app").innerHTML =
-`
-<i class="logo"></i>
-<h2>Essential Links</h2>
-<p>
-    <a href="https://webpack.js.org/" target="_blank">Webpack</a>
-    <a href="http://expressjs.com/" target="_blank">Express</a>
-</p>
-<h2>Learn More</h2>
-<a href="${__publicPath === '/' ? '' : __publicPath }/about">About</a>
-`
+// document.getElementById("app").innerHTML =
+// `
+// <i class="logo"></i>
+// <h2>Essential Links</h2>
+// <p>
+//     <a href="https://webpack.js.org/" target="_blank">Webpack</a>
+//     <a href="http://expressjs.com/" target="_blank">Express</a>
+// </p>
+// <h2>Learn More</h2>
+// <a href="/about">About</a>
+// `
 
 /* Uncomment these lines to get Vue.js support */
 
-// import Vue from "vue";
-// import Router from "vue-router";
-// import App from "./components/App.vue";
-// import Home from './components/Home.vue';
-// import About from './components/About.vue';
+import Vue from "vue";
+import Router from "vue-router";
+import App from "./components/App.vue";
+import Home from './components/Home.vue';
+import About from './components/About.vue';
 
-// Vue.use(Router);
+import { AlertPlugin } from "vux";
 
-// const router = new Router({
-//   routes : [
-//     { path: '/', component: Home},
-//     { path: '/about', component: About},
-//   ]
-// });
+Vue.use(Router);
+Vue.use(AlertPlugin);
 
-// new Vue({
-//   el: "#app",
-//   router,
-//   template: "<App/>",
-//   components: {
-//     App
-//   }
-// });
+const router = new Router({
+  routes : [
+    { path: '/', component: Home},
+    { path: '/about', component: About},
+  ]
+});
+
+new Vue({
+  el: "#app",
+  router,
+  template: "<App/>",
+  components: {
+    App
+  }
+});
 
 /* Uncomment these lines to get React support */
 

@@ -8,11 +8,25 @@
     </p>
     <h2>Learn More</h2>
     <router-link to="/about">About</router-link>
+    <group><cell title="title" value="valuee" @click.native="showAlert"></cell></group>
   </div>
 </template>
 
 <script>
+  import { Group, Cell } from 'vux';
+
   export default {
-    name: "Home"
+    components: {
+      Group,
+      Cell
+    },
+    name: "Home",
+    methods: {
+      showAlert(){
+        this.$vux.alert.show({
+          content:"hello"
+        })
+      }
+    }
   }
 </script>
