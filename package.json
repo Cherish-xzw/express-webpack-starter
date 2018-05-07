@@ -1,5 +1,5 @@
 {
-  "name": "express-webpack-starter",
+  "name": "react-admin",
   "version": "0.0.1",
   "description": "Using webpack in multipage application",
   "license": "MIT",
@@ -41,6 +41,7 @@
     "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
     "build": "npm-run-all clean --parallel build:*",
     "release": "npm-run-all clean build release:copy release:deps release:package",
+    "deploy": "npm-run-all clean build release:docker",
     "test": "mocha -r babel-register -r should --exit",
     "clean": "rimraf public/assets dist release",
     "lint": "npm-run-all lint:js lint:css",
@@ -54,7 +55,8 @@
     "build:server": "cross-env BABEL_ENV=production babel src -d dist --ignore src/assets --copy-files -s",
     "release:copy": "cross-env-shell \"shx mkdir -p release/$npm_package_name && shx cp -r package.json dist/ public/ release/$npm_package_name\"",
     "release:deps": "cross-env-shell \"cd release/$npm_package_name && npm install --production\"",
-    "release:package": "cross-env-shell \"cd release && tar -zcvf $npm_package_name.tar.gz $npm_package_name\""
+    "release:package": "cross-env-shell \"cd release && tar -zcvf $npm_package_name.tar.gz $npm_package_name\"",
+    "release:docker": "cross-env-shell \"docker build -t zhengweixu/$npm_package_name . \""
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.1",
@@ -63,7 +65,7 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.1.2",
     "babel-loader": "^7.1.2",
-    "babel-plugin-lodash": "^3.3.2",
+    "babel-plugin-import": "^1.6.7",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
@@ -87,12 +89,12 @@
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "lint-staged": "^6.0.0",
-    "lodash-webpack-plugin": "^0.11.5",
     "mocha": "^4.1.0",
     "nodemon": "^1.12.1",
     "npm-run-all": "^4.1.2",
     "nyc": "^11.4.1",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
+    "postcss-flexbugs-fixes": "^3.3.0",
     "postcss-loader": "^2.1.1",
     "pre-commit": "^1.2.2",
     "prettier": "^1.9.2",
@@ -111,6 +113,7 @@
     "webpack-dev-server": "^2.9.4"
   },
   "dependencies": {
+    "antd": "^3.4.0",
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.18.2",
     "compression": "^1.7.1",
@@ -119,8 +122,19 @@
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "express-partials": "^0.3.0",
+    "history": "^4.7.2",
     "moment": "^2.20.1",
     "normalize.css": "^7.0.0",
-    "source-map-support": "^0.5.0"
+    "prop-types": "^15.6.1",
+    "qs": "^6.5.1",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-saga": "^0.16.0",
+    "source-map-support": "^0.5.0",
+    "whatwg-fetch": "^2.0.4"
   }
 }
