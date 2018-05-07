@@ -5,7 +5,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const AssetsWebpackPlugin = require('assets-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const { BundleAnalyzerPlugin }  = require("webpack-bundle-analyzer");
 const autoprefixer = require("autoprefixer");
 const pkg = require('../package.json');
@@ -18,7 +17,7 @@ function resolve(dir) {
 }
 
 const config = {
-  context: resolve('src/assets/javascripts'),
+  context: resolve('src/assets'),
 
   entry: {
     main: ['babel-polyfill', './main.js']
@@ -33,7 +32,8 @@ const config = {
 
   resolve: {
     alias: {
-      vue$: "vue/dist/vue.esm.js"
+      vue$: "vue/dist/vue.esm.js",
+      '@': resolve('src/assets'),
     },
     extensions: ['.js', '.vue', '.json']
   },
@@ -60,6 +60,27 @@ const config = {
         })
       },
       {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: [
+            { loader: "css-loader" },
+            {
+              loader: "postcss-loader",
+              options: {
+                plugins: [
+                  autoprefixer({
+                    browsers: pkg.browserslist
+                  })
+                ]
+              }
+            },
+            { loader: "sass-loader" },
+          ]
+        })
+      },
+      {
         test: /\.less$/,
         exclude: /node_modules/,
         use: ExtractTextPlugin.extract({
@@ -81,6 +102,14 @@ const config = {
         })
       },
       {
+        test: /\.svg$/,
+        loader: 'svg-sprite-loader',
+        include: [resolve('src/assets/icons/svg')],
+        options: {
+          symbolId: 'icon-[name]'
+        }
+      },
+      {
         test: /\.js$/,
         include: [
           resolve('src'),
@@ -90,7 +119,6 @@ const config = {
         use: {
           loader: 'babel-loader',
           options: {
-            plugins: ['lodash'],
             presets: [
               [
                 'env',
@@ -118,7 +146,6 @@ const config = {
             js : {
               loader: 'babel-loader',
               options: {
-                plugins: ['lodash'],
                 presets: [
                   [
                     'env',
@@ -137,7 +164,7 @@ const config = {
         }
       },
       {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        test: /\.(png|jpe?g|gif)(\?.*)?$/,
         use: {
           loader: 'url-loader',
           options: {
@@ -166,7 +193,6 @@ const config = {
     new ExtractTextPlugin({
       filename: IS_PROD ? 'css/[name].[contenthash].css' : '[name].css'
     }),
-    new LodashModuleReplacementPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'
