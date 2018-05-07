@@ -8,6 +8,7 @@ import './polyfills';
 import app from './app';
 import http from 'http';
 import fs from 'fs';
+import path from 'path';
 
 /**
  * Get port from environment and store in Express.
@@ -22,7 +23,7 @@ app.set('port', port);
  */
 
 if (app.get('env') === "production") {
-  const content = fs.readFileSync("public/assets/manifest.json", "utf8");
+  const content = fs.readFileSync(path.join(__dirname, "../public/assets/manifest.json"), "utf8");
   app.set('assetsManifest', JSON.parse(content))
 }
 
