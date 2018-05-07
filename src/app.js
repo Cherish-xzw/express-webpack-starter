@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import path from 'path';
+import history from 'connect-history-api-fallback';
 import pkg from '../package.json';
 
 import locals from './middlewares/locals';
@@ -41,6 +42,14 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(cookieParser());
+// HTML5 history api fallback for SPA
+app.use(history({
+  index : '/',
+  rewrites:[{
+    from: /^\/api\/.*$/,
+    to:(context) => context.parsedUrl.pathname
+  }]
+}))
 app.use(`${pkg.path === '/' ? '' : pkg.path}`, pages());
 app.use(`${pkg.path === '/' ? '' : pkg.path}/api`, api());
 

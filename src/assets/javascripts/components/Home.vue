@@ -8,7 +8,7 @@
     </p>
     <h2>Learn More</h2>
     <router-link to="/about">About</router-link>
-    <group><cell title="title" value="valuee" @click.native="showAlert"></cell></group>
+    <group><cell title="title" value="value" @click.native="showAlert"></cell></group>
   </div>
 </template>
 

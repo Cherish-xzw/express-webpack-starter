@@ -5,9 +5,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const AssetsWebpackPlugin = require('assets-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const autoprefixer = require('autoprefixer');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
-const { BundleAnalyzerPlugin }  = require("webpack-bundle-analyzer");
-const autoprefixer = require("autoprefixer");
 const vuxLoader = require('vux-loader');
 const pkg = require('../package.json');
 
@@ -22,7 +22,7 @@ const config = {
   context: resolve('src/assets/javascripts'),
 
   entry: {
-    main: ['babel-polyfill', './main.js']
+    main: ['babel-polyfill', './main.js'],
   },
 
   output: {
@@ -34,7 +34,7 @@ const config = {
 
   resolve: {
     alias: {
-      vue$: "vue/dist/vue.esm.js"
+      vue$: 'vue/dist/vue.esm.js'
     },
     extensions: ['.js', '.vue', '.json']
   },
@@ -44,11 +44,11 @@ const config = {
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
+          fallback: 'style-loader',
           use: [
-            { loader: "css-loader", options: { importLoaders: 1 } },
+            { loader: 'css-loader', options: { importLoaders: 1 } },
             {
-              loader: "postcss-loader",
+              loader: 'postcss-loader',
               options: {
                 plugins: [
                   autoprefixer({
@@ -64,11 +64,11 @@ const config = {
         test: /\.less$/,
         exclude: /node_modules/,
         use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
+          fallback: 'style-loader',
           use: [
-            { loader: "css-loader" },
+            { loader: 'css-loader' },
             {
-              loader: "postcss-loader",
+              loader: 'postcss-loader',
               options: {
                 plugins: [
                   autoprefixer({
@@ -77,7 +77,7 @@ const config = {
                 ]
               }
             },
-            { loader: "less-loader" },
+            { loader: 'less-loader' }
           ]
         })
       },
@@ -86,11 +86,12 @@ const config = {
         include: [
           resolve('src'),
           // webpack-dev-server#1090 for Safari
-          resolve('node_modules/webpack-dev-server/')
+          resolve('/node_modules/webpack-dev-server/'),
+          resolve('/node_modules/vux/'),
         ],
         loader: 'babel-loader',
         options: {
-          plugins: ['lodash'],
+          plugins: ["lodash"],
           presets: [
             [
               'env',
@@ -102,7 +103,7 @@ const config = {
             ],
             'stage-2',
             'react'
-          ]
+          ],
         }
       },
       {
@@ -113,11 +114,11 @@ const config = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders : {
-            js : {
+          loaders: {
+            js: {
               loader: 'babel-loader',
               options: {
-                plugins: ['lodash'],
+                plugins: ["lodash"],
                 presets: [
                   [
                     'env',
@@ -158,18 +159,22 @@ const config = {
   },
 
   plugins: [
-    new CopyWebpackPlugin([{
-      from: resolve('src/assets/images'),
-      to: resolve('public/assets/images')
-    }]),
+    new LodashModuleReplacementPlugin,
+    new CopyWebpackPlugin([
+      {
+        from: resolve('src/assets/images'),
+        to: resolve('public/assets/images')
+      }
+    ]),
     new ExtractTextPlugin({
       filename: IS_PROD ? 'css/[name].[contenthash].css' : '[name].css'
     }),
-    new LodashModuleReplacementPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'
     }),
+
+
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendors',
       minChunks(module) {
@@ -193,7 +198,7 @@ if (!IS_PROD) {
   config.devServer = {
     host: '0.0.0.0',
     port: '3808'
-  }
+  };
 }
 
 if (IS_PROD) {
@@ -210,7 +215,8 @@ if (IS_PROD) {
         dead_code: true,
         warnings: false
       },
-      sourceMap: true
+      sourceMap: true,
+      parallel: true
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new AssetsWebpackPlugin({
@@ -239,11 +245,11 @@ if (IS_PROD) {
       }
     }),
     new BundleAnalyzerPlugin({
-      analyzerMode: "static",
+      analyzerMode: 'static',
       generateStatsFile: true,
       openAnalyzer: false,
-      reportFilename: resolve("webpack-report/index.html"),
-      statsFilename: resolve("webpack-report/stats.json")
+      reportFilename: resolve('webpack-report/index.html'),
+      statsFilename: resolve('webpack-report/stats.json')
     })
   );
 
@@ -254,8 +260,29 @@ if (IS_PROD) {
 }
 
 module.exports = vuxLoader.merge(config, {
-  options: {},
-  plugins: [{
-    name: 'vux-ui'
-  }]
+  plugins: [
+    {
+      name: 'vux-ui',
+    },
+    {
+      name: 'less-theme',
+      path: 'src/assets/stylesheets/common/theme.less' // 相对项目根目录路径
+    },
+    {
+      name: 'duplicate-style',
+      options: {
+        cssProcessorOptions : {
+          safe: true,
+          zindex: false,
+          autoprefixer: {
+            add: true,
+            "browsers": [
+              "iOS >= 7",
+              "Android >= 4.1"
+            ]
+          }
+        }
+      }
+    }
+  ]
 });
