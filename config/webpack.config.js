@@ -133,7 +133,10 @@ const config = {
                 ]
               }
             }
-          }
+          },
+          postcss: autoprefixer({
+            browsers: pkg.browserslist
+          })
         }
       },
       {
@@ -276,10 +279,7 @@ module.exports = vuxLoader.merge(config, {
           zindex: false,
           autoprefixer: {
             add: true,
-            "browsers": [
-              "iOS >= 7",
-              "Android >= 4.1"
-            ]
+            browsers: pkg.browserslist
           }
         }
       }
