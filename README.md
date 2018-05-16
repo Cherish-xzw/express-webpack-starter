@@ -13,12 +13,22 @@
 * Support .vue files and es2015+ syntax
 * Gzip compression when bundles are too big
 
+## Note
+
+The default branch does not set any front-end library , you can choose a library in these branch
+
+* [`jquery`](https://github.com/Cherish-xzw/express-webpack-starter/tree/jquery)
+* [`vux`](https://github.com/Cherish-xzw/express-webpack-starter/tree/vux)
+* [`elementUI`](https://github.com/Cherish-xzw/express-webpack-starter/tree/element)
+* [`antd-mobile`](https://github.com/Cherish-xzw/express-webpack-starter/tree/antd)
+* [`antd`](https://github.com/Cherish-xzw/express-webpack-starter/tree/antd)
+
 ## Usage
 
 First of all, you should clone this repo
 
 ```sh
-git clone --depth=1 https://github.com/Cherish-xzw/express-webpack-starter MyAwesomeApp
+git clone --depth=1 -b <branch> https://github.com/Cherish-xzw/express-webpack-starter MyAwesomeApp
 ```
 
 After that, you can run
