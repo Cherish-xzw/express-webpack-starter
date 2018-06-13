@@ -134,9 +134,11 @@ const config = {
               }
             }
           },
-          postcss: autoprefixer({
-            browsers: pkg.browserslist
-          })
+          postcss: [
+            autoprefixer({
+              browsers: pkg.browserslist
+            })
+          ]
         }
       },
       {

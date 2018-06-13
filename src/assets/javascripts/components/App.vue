@@ -1,13 +1,17 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <root></root>
   </div>
 </template>
 
 <script>
-  export default {
-    name: "App"
+import Root from './Root';
+export default {
+  name: 'App',
+  components: {
+    Root
   }
+};
 </script>
 
 <style lang="less">

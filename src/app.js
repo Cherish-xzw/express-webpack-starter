@@ -12,6 +12,7 @@ import pages from './routes/pages';
 import api from './routes/api';
 
 const app = express();
+const appPath = `${pkg.path === '/' ? '' : pkg.path}`;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,7 +22,7 @@ app.set('view engine', 'ejs');
 app.use(compression());
 // register application middleware
 app.use(
-  `${pkg.path === '/' ? '' : pkg.path}`,
+  appPath,
   express.static(path.join(__dirname, '../public'), {
     maxage: 1000 * 60 * 60 * 24 * 30 // a month
   })
@@ -29,7 +30,7 @@ app.use(
 app.use(
   locals({
     asset: {
-      publicPath: `${pkg.path === '/' ? '' : pkg.path}/assets/`,
+      publicPath: `${appPath}/assets/`,
       // prepend: '//cdn.upchina.com' // If assets have been uploaded to cdn
     }
   })
@@ -43,15 +44,15 @@ app.use(
 app.use(bodyParser.json());
 app.use(cookieParser());
 // HTML5 history api fallback for SPA
-app.use(history({
+app.use(appPath,history({
   index : '/',
   rewrites:[{
     from: /^\/api\/.*$/,
     to:(context) => context.parsedUrl.pathname
   }]
 }))
-app.use(`${pkg.path === '/' ? '' : pkg.path}`, pages());
-app.use(`${pkg.path === '/' ? '' : pkg.path}/api`, api());
+app.use(appPath, pages());
+app.use(`${appPath}/api`, api());
 
 // proxy the webpack assets directory to the webpack-dev-server.
 // It is only intended for use in development.
@@ -59,7 +60,7 @@ if (app.get('env') === 'development') {
   /* eslint-disable  global-require , import/no-extraneous-dependencies */
   const proxy = require('http-proxy-middleware');
   app.use(
-    `${pkg.path === '/' ? '' : pkg.path}/assets/`,
+    `${appPath}/assets/`,
     proxy({
       target: 'http://localhost:3808'
     })
