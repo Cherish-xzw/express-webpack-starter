@@ -29,7 +29,8 @@ app.use(
   locals({
     asset: {
       basePath: `assets/`,
-      // prepend: '//cdn.upchina.com' // If assets have been uploaded to cdn
+      // If assets have been uploaded to cdn
+      // prepend: '//cdn.upchina.com'
     }
   })
 );

@@ -15,5 +15,8 @@
     <% } %>
     <script src="<%= asset_path('vendors.js')  %>"></script>
     <script src="<%= asset_path('main.js')  %>"></script>
+    <% if(script) { %>
+    <script src="<%= asset_path('pages.' + script + '.js') %>"></script>
+    <% } %>
 </body>
 </html>

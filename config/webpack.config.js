@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const glob = require('glob');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -6,7 +7,7 @@ const AssetsWebpackPlugin = require('assets-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
-const { BundleAnalyzerPlugin }  = require("webpack-bundle-analyzer");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const autoprefixer = require("autoprefixer");
 const pkg = require('../package.json');
 
@@ -17,12 +18,56 @@ function resolve(dir) {
   return path.join(ROOT_PATH, dir);
 }
 
+let autoEntriesCount = 0;
+let watchAutoEntries = [];
+const defaultEntries = ['babel-polyfill', './main.js'];
+
+function generateEntries() {
+  // generate automatic entry points
+  const autoEntries = {};
+  const autoEntriesMap = {};
+  const pageEntries = glob.sync('pages/**/index.js', {
+    cwd: path.join(ROOT_PATH, 'src/assets/javascripts'),
+  });
+  watchAutoEntries = [path.join(ROOT_PATH, 'src/assets/javascripts/pages/')];
+
+  function generateAutoEntries(path, prefix = '.') {
+    const chunkPath = path.replace(/\/index\.js$/, '');
+    const chunkName = chunkPath.replace(/\//g, '.');
+    autoEntriesMap[chunkName] = `${prefix}/${path}`;
+  }
+
+  pageEntries.forEach(path => generateAutoEntries(path));
+
+  const autoEntryKeys = Object.keys(autoEntriesMap);
+  autoEntriesCount = autoEntryKeys.length;
+
+  // import ancestor entrypoints within their children
+  autoEntryKeys.forEach(entry => {
+    const entryPaths = [autoEntriesMap[entry]];
+    const segments = entry.split('.');
+    while (segments.pop()) {
+      const ancestor = segments.join('.');
+      if (autoEntryKeys.includes(ancestor)) {
+        entryPaths.unshift(autoEntriesMap[ancestor]);
+      }
+    }
+    autoEntries[entry] = defaultEntries.concat(entryPaths);
+  });
+
+  const manualEntries = {
+    main: defaultEntries,
+  };
+
+  return Object.assign(manualEntries, autoEntries);
+}
+
+console.log(generateEntries());
+
 const config = {
   context: resolve('src/assets/javascripts'),
 
-  entry: {
-    main: ['babel-polyfill', './main.js']
-  },
+  entry: generateEntries,
 
   output: {
     path: resolve('public/assets'),
@@ -39,13 +84,16 @@ const config = {
   },
 
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           fallback: "style-loader",
-          use: [
-            { loader: "css-loader", options: { importLoaders: 1 } },
+          use: [{
+              loader: "css-loader",
+              options: {
+                importLoaders: 1
+              }
+            },
             {
               loader: "postcss-loader",
               options: {
@@ -64,8 +112,9 @@ const config = {
         exclude: /node_modules/,
         use: ExtractTextPlugin.extract({
           fallback: "style-loader",
-          use: [
-            { loader: "css-loader" },
+          use: [{
+              loader: "css-loader"
+            },
             {
               loader: "postcss-loader",
               options: {
@@ -76,7 +125,9 @@ const config = {
                 ]
               }
             },
-            { loader: "less-loader" },
+            {
+              loader: "less-loader"
+            },
           ]
         })
       },
@@ -114,8 +165,8 @@ const config = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders : {
-            js : {
+          loaders: {
+            js: {
               loader: 'babel-loader',
               options: {
                 plugins: ['lodash'],

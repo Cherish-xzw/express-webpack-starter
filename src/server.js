@@ -1,9 +1,5 @@
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-console */
+/* eslint-disable no-use-before-define, no-console */
 
-/**
- * Module dependencies.
- */
 import './polyfills';
 import app from './app';
 import http from 'http';

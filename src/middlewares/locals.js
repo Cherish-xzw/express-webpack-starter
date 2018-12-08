@@ -4,9 +4,12 @@ const pkg = require('../../package.json');
 
 module.exports = options =>
   function locals(req, res, next) {
-    res.locals.asset_path = assetPath(req, options.asset);
-    res.locals.production = req.app.get('env') === 'production';
-    res.locals.moment = moment;
-    res.locals.basePath = pkg.basePath;
-    next();
+    Object.assign(res.locals, {
+      production: req.app.get('env') === 'production',
+      script: res.locals.script || '',
+      asset_path: assetPath(req, options.asset),
+      basePath: pkg.basePath,
+      moment,
+    });
+    next()
   };

@@ -3,8 +3,8 @@ module.exports = function assetHelper(req, opt = {
   prepend: ""
 }) {
   return function assetPath(assetName) {
-    const name = assetName.split(".")[0];
-    const suffix = assetName.split(".")[1];
+    const name = assetName.slice(0, assetName.lastIndexOf('.'));
+    const suffix = assetName.slice(assetName.lastIndexOf('.') + 1);
     let url = "";
     if (req.app.get('env') === "development") {
       url += `${opt.basePath}${name}.${suffix}`;
