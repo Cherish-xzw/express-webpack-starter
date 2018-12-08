@@ -1,5 +1,5 @@
 module.exports = function assetHelper(req, opt = {
-  publicPath: "",
+  basePath: "",
   prepend: ""
 }) {
   return function assetPath(assetName) {
@@ -7,7 +7,7 @@ module.exports = function assetHelper(req, opt = {
     const suffix = assetName.split(".")[1];
     let url = "";
     if (req.app.get('env') === "development") {
-      url += `${opt.publicPath}${name}.${suffix}`;
+      url += `${opt.basePath}${name}.${suffix}`;
     }
     if (req.app.get('env') === "production") {
       if (opt.prepend) {
@@ -16,7 +16,7 @@ module.exports = function assetHelper(req, opt = {
       if( name in req.app.get('assetsManifest') ) {
         url += req.app.get('assetsManifest')[name][suffix];
       } else {
-        url += `${opt.publicPath}${name}.${suffix}`;
+        url += `${opt.basePath}${name}.${suffix}`;
       }
     }
     return url;

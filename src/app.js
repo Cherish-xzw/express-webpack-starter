@@ -20,7 +20,7 @@ app.set('view engine', 'ejs');
 app.use(compression());
 // register application middleware
 app.use(
-  `${pkg.path === '/' ? '' : pkg.path}`,
+  pkg.basePath,
   express.static(path.join(__dirname, '../public'), {
     maxage: 1000 * 60 * 60 * 24 * 30 // a month
   })
@@ -28,7 +28,7 @@ app.use(
 app.use(
   locals({
     asset: {
-      publicPath: `${pkg.path === '/' ? '' : pkg.path}/assets/`,
+      basePath: `assets/`,
       // prepend: '//cdn.upchina.com' // If assets have been uploaded to cdn
     }
   })
@@ -41,8 +41,8 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(`${pkg.path === '/' ? '' : pkg.path}`, pages());
-app.use(`${pkg.path === '/' ? '' : pkg.path}/api`, api());
+app.use(pkg.basePath, pages());
+app.use(`${pkg.basePath}/api`, api());
 
 // proxy the webpack assets directory to the webpack-dev-server.
 // It is only intended for use in development.
@@ -50,7 +50,7 @@ if (app.get('env') === 'development') {
   /* eslint-disable  global-require , import/no-extraneous-dependencies */
   const proxy = require('http-proxy-middleware');
   app.use(
-    `${pkg.path === '/' ? '' : pkg.path}/assets/`,
+    `${pkg.basePath || '/'}assets/`,
     proxy({
       target: 'http://localhost:3808'
     })

@@ -7,6 +7,6 @@ module.exports = options =>
     res.locals.asset_path = assetPath(req, options.asset);
     res.locals.production = req.app.get('env') === 'production';
     res.locals.moment = moment;
-    res.locals.publicPath = pkg.path;
+    res.locals.basePath = pkg.basePath;
     next();
   };

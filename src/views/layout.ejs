@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <base href="<%=basePath%>">
     <title><%=title%></title>
     <link rel="stylesheet" href="<%= asset_path('main.css') %>">
 </head>
 <body>
     <%-body%>
-    <script>window.__publicPath="<%=publicPath%>"</script>
     <% if(production){ %>
     <script src="<%= asset_path('manifest.js') %>"></script>
     <% } %>

@@ -10,5 +10,5 @@ document.getElementById("app").innerHTML =
     <a href="http://expressjs.com/" target="_blank">Express</a>
 </p>
 <h2>Learn More</h2>
-<a href="${__publicPath === '/' ? '' : __publicPath }/about">About</a>
+<a href="about">About</a>
 `
