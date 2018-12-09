@@ -62,8 +62,6 @@ function generateEntries() {
   return Object.assign(manualEntries, autoEntries);
 }
 
-console.log(generateEntries());
-
 const config = {
   context: resolve('src/assets/javascripts'),
 
@@ -71,7 +69,7 @@ const config = {
 
   output: {
     path: resolve('public/assets'),
-    publicPath: `${pkg.basePath || '/'}assets/`,
+    publicPath: `${pkg.basePath}assets/`,
     filename: IS_PROD ? 'js/[name].[chunkhash].js' : '[name].js',
     chunkFilename: IS_PROD ? 'js/[name].[chunkhash].js' : '[name].chunk.js' // works with lazy loading
   },

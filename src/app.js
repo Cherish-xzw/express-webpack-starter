@@ -43,7 +43,7 @@ app.use(
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(pkg.basePath, pages());
-app.use(`${pkg.basePath}/api`, api());
+app.use(`${pkg.basePath}api`, api());
 
 // proxy the webpack assets directory to the webpack-dev-server.
 // It is only intended for use in development.
@@ -51,7 +51,7 @@ if (app.get('env') === 'development') {
   /* eslint-disable  global-require , import/no-extraneous-dependencies */
   const proxy = require('http-proxy-middleware');
   app.use(
-    `${pkg.basePath || '/'}assets/`,
+    `${pkg.basePath}assets/`,
     proxy({
       target: 'http://localhost:3808'
     })
