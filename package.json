@@ -4,7 +4,7 @@
   "description": "Using webpack in multipage application",
   "license": "MIT",
   "basePath": "/",
-  "main": "dist/server.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=6.3",
     "npm": ">=3.10"
@@ -38,7 +38,7 @@
   ],
   "scripts": {
     "dev": "concurrently -k \"npm run dev:client\" \"npm run dev:server\"",
-    "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
+    "start": "npm run build && cross-env NODE_ENV=production node dist/index.js",
     "build": "npm-run-all clean --parallel build:*",
     "release": "npm-run-all clean build release:copy release:deps release:package",
     "test": "mocha -r babel-register -r should --exit",
@@ -48,7 +48,7 @@
     "lint:css": "stylelint \"src/**/*.{css,less,styl,scss,sass,sss}\"",
     "lint:staged": "lint-staged",
     "test:cover": "nyc npm run test",
-    "dev:server": "cross-env DEBUG=app:* nodemon --watch src/ --ignore src/assets --exec babel-node src/server.js",
+    "dev:server": "cross-env DEBUG=app:* nodemon --watch src/ --ignore src/assets --exec babel-node src/index.js",
     "dev:client": "nodemon --watch config/webpack.config.js -- ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config config/webpack.config.js",
     "build:client": "cross-env NODE_ENV=production webpack --config config/webpack.config.js",
     "build:server": "cross-env BABEL_ENV=production babel src -d dist --ignore src/assets --copy-files -s",
