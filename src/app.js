@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import helmet from 'helmet';
+import cookieSession from 'cookie-session';
 import path from 'path';
 import pkg from '../package.json';
 
@@ -16,6 +17,7 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.set('trust proxy', 1) // trust first proxy
 
 // use before static middleware to compress static files
 app.use(compression());
@@ -44,6 +46,10 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cookieSession({
+  name: 'session',
+  keys: ['/* secret keys */'],
+}))
 app.use(pkg.basePath, pages());
 app.use(`${pkg.basePath}api`, api());
 
