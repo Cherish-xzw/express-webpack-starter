@@ -3,6 +3,7 @@ import partials from 'express-partials';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
+import helmet from 'helmet';
 import path from 'path';
 import pkg from '../package.json';
 
@@ -18,6 +19,7 @@ app.set('view engine', 'ejs');
 
 // use before static middleware to compress static files
 app.use(compression());
+app.use(helmet());
 // register application middleware
 app.use(
   pkg.basePath,
