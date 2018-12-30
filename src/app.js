@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import helmet from 'helmet';
 import cookieSession from 'cookie-session';
+import validator from 'express-validator';
 import path from 'path';
 import pkg from '../package.json';
 
@@ -39,6 +40,7 @@ app.use(
   })
 );
 app.use(partials());
+app.use(validator())
 app.use(
   bodyParser.urlencoded({
     extended: true
