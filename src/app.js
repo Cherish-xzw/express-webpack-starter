@@ -6,14 +6,17 @@ import compression from 'compression';
 import helmet from 'helmet';
 import cookieSession from 'cookie-session';
 import validator from 'express-validator';
+import expressGraphQL from 'express-graphql';
 import path from 'path';
-import pkg from '../package.json';
 
+import pkg from '../package.json';
 import locals from './middlewares/locals';
 import pages from './routes/pages';
 import api from './routes/api';
+import schema from './graphql/schema';
 
 const app = express();
+const __DEV__ = app.get('env') === 'development';
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -52,12 +55,21 @@ app.use(cookieSession({
   name: 'session',
   keys: ['/* secret keys */'],
 }))
-app.use(pkg.basePath, pages());
-app.use(`${pkg.basePath}api`, api());
+app.use(pkg.basePath, pages()); // normal page routes
+app.use(`${pkg.basePath}api`, api()); // RESTful API routes
+app.use( // GraphQL routes
+  `${pkg.basePath}graphql`,
+  expressGraphQL(req => ({
+    schema,
+    graphiql: __DEV__,
+    rootValue: { request: req },
+    pretty: __DEV__,
+  })),
+);
 
 // proxy the webpack assets directory to the webpack-dev-server.
 // It is only intended for use in development.
-if (app.get('env') === 'development') {
+if (__DEV__) {
   /* eslint-disable  global-require , import/no-extraneous-dependencies */
   const proxy = require('http-proxy-middleware');
   app.use(
@@ -79,7 +91,7 @@ app.use((req, res, next) => {
 app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = __DEV__ ? err : {};
 
   // render the error page
   res.status(err.status || 500);
