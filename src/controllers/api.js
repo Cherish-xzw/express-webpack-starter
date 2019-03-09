@@ -1,17 +1,8 @@
-import { validationResult } from 'express-validator/check' ;
+import {
+  validationResult
+} from 'express-validator/check';
 
 export default {
-  index(req, res) {
-    res.render('home', {
-      title: 'home',
-      script: 'home',
-    });
-  },
-  about(req, res) {
-    res.render('about', {
-      title: 'about',
-    });
-  },
   async message(req, res) {
     // Finds the validation errors in this request and wraps them in an object with handy functions
     const errors = validationResult(req);

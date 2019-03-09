@@ -1,9 +1,9 @@
 import express from 'express';
-import homeController from '../controllers/home';
+import pagesCtrl from '../controllers/pages';
 
 export default function pages() {
   const router = express.Router();
-  router.get('/', homeController.index);
-  router.get('/about', homeController.about);
+  router.get('/', pagesCtrl.index);
+  router.get('/about', pagesCtrl.about);
   return router;
 }

@@ -7,9 +7,10 @@ import helmet from 'helmet';
 import cookieSession from 'cookie-session';
 import validator from 'express-validator';
 import path from 'path';
-import pkg from '../package.json';
+import moment from 'moment';
 
-import locals from './middlewares/locals';
+import pkg from '../package.json';
+import assetPath from './middlewares/asset_path';
 import pages from './routes/pages';
 import api from './routes/api';
 
@@ -19,6 +20,11 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.set('trust proxy', 1) // trust first proxy
+
+// set locals
+app.locals.moment = moment;
+app.locals.basePath = pkg.basePath;
+app.locals.production = app.get('env') === 'production';
 
 // use before static middleware to compress static files
 app.use(compression());
@@ -31,12 +37,9 @@ app.use(
   })
 );
 app.use(
-  locals({
-    asset: {
-      basePath: `assets/`,
-      // If assets have been uploaded to cdn
-      // prepend: '//cdn.upchina.com'
-    }
+  assetPath({
+    basePath: `assets/`,
+    // prepend: '//cdn.upchina.com' // If assets have been uploaded to cdn
   })
 );
 app.use(partials());
@@ -50,14 +53,14 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cookieSession({
   name: 'session',
-  keys: ['/* secret keys */'],
+  keys: ['secret'],
 }))
 app.use(pkg.basePath, pages());
 app.use(`${pkg.basePath}api`, api());
 
 // proxy the webpack assets directory to the webpack-dev-server.
 // It is only intended for use in development.
-if (app.get('env') === 'development') {
+if (!app.locals.production) {
   /* eslint-disable  global-require , import/no-extraneous-dependencies */
   const proxy = require('http-proxy-middleware');
   app.use(
@@ -79,7 +82,7 @@ app.use((req, res, next) => {
 app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = !app.locals.production ? err : {};
 
   // render the error page
   res.status(err.status || 500);
