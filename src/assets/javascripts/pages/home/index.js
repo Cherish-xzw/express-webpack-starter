@@ -9,5 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
       </p>
       <h2>Learn More</h2>
       <a href="about">About</a>
+      <form action="api/login" method="post">
+        <label>username: </label>
+        <input type="text" name="username"/>
+        <label>password: </label>
+        <input type="password" name="password"/>
+        <button>submit</button>
+      </form>
   `
 });

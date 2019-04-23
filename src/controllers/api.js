@@ -1,24 +1,23 @@
-import {
-  validationResult
-} from 'express-validator/check';
+import passport from '../middlewares/passport';
 
 export default {
-  async message(req, res) {
-    // Finds the validation errors in this request and wraps them in an object with handy functions
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({
-        errors: errors.array()
+  login(req, res, next) {
+    passport.authenticate('local', (err, user, info) => {
+      if (err) return next(err);
+      if (!user) return res.status(401).json(info);
+      req.logIn(user, (error) => {
+        if (err) return next(error);
+        res.json(user);
       });
-    }
+    })(req, res, next);
+  },
 
-    function getMessage() {
-      return new Promise(resolve => resolve(req.body.message));
-    }
+  logout(req, res) {
+    req.logout();
+    res.redirect(req.app.locals.basePath);
+  },
 
-    const message = await getMessage();
-    res.json({
-      message,
-    });
+  async user(req, res) {
+    res.json(req.user);
   },
 };

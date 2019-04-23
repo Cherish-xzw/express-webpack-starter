@@ -11,6 +11,7 @@ import moment from 'moment';
 
 import pkg from '../package.json';
 import assetPath from './middlewares/asset_path';
+import passport from './middlewares/passport';
 import pages from './routes/pages';
 import api from './routes/api';
 
@@ -54,7 +55,9 @@ app.use(cookieParser());
 app.use(cookieSession({
   name: 'session',
   keys: ['secret'],
-}))
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(pkg.basePath, pages());
 app.use(`${pkg.basePath}api`, api());
 
