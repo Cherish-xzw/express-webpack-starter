@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("app").innerHTML =
     `
       <i class="logo"></i>
@@ -16,5 +16,5 @@ document.addEventListener('DOMContentLoaded', () => {
         <input type="password" name="password"/>
         <button>submit</button>
       </form>
-  `
+  `;
 });

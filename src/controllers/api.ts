@@ -1,8 +1,8 @@
-import passport from '../middlewares/passport';
+import passport from "../middlewares/passport";
 
 export default {
   login(req, res, next) {
-    passport.authenticate('local', (err, user, info) => {
+    passport.authenticate("local", (err, user, info) => {
       if (err) return next(err);
       if (!user) return res.status(401).json(info);
       req.logIn(user, (error) => {
