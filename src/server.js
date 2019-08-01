@@ -18,10 +18,8 @@ app.set('port', port);
  * Cache the assets manifest
  */
 
-if (app.get('env') === "production") {
-  const content = fs.readFileSync(path.join(__dirname, "../public/assets/manifest.json"), "utf8");
-  app.set('assetsManifest', JSON.parse(content))
-}
+const content = fs.readFileSync(path.join(__dirname, "../public/assets/manifest.json"), "utf8");
+app.set('assetsManifest', JSON.parse(content))
 
 /**
  * Create HTTP server.

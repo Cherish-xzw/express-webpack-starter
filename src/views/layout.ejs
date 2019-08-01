@@ -10,10 +10,7 @@
 </head>
 <body>
     <%-body%>
-    <% if(production){ %>
-    <script src="<%= asset_path('manifest.js') %>"></script>
-    <% } %>
-    <script src="<%= asset_path('vendors.js')  %>"></script>
+    <script src="<%= asset_path('runtime.js')  %>"></script>
     <script src="<%= asset_path('main.js')  %>"></script>
     <% if(script) { %>
     <script src="<%= asset_path('pages.' + script + '.js') %>"></script>

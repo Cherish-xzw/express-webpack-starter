@@ -1,13 +1,14 @@
 const webpack = require('webpack');
 const glob = require('glob');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const AssetsWebpackPlugin = require('assets-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const {
+  BundleAnalyzerPlugin
+} = require("webpack-bundle-analyzer");
 const autoprefixer = require("autoprefixer");
 const pkg = require('../package.json');
 
@@ -63,6 +64,8 @@ function generateEntries() {
 }
 
 const config = {
+  mode: IS_PROD ? 'production' : 'development',
+
   context: resolve('src/assets/javascripts'),
 
   entry: generateEntries,
@@ -84,50 +87,50 @@ const config = {
   module: {
     rules: [{
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: [{
-              loader: "css-loader",
-              options: {
-                importLoaders: 1
-              }
-            },
-            {
-              loader: "postcss-loader",
-              options: {
-                plugins: [
-                  autoprefixer({
-                    browsers: pkg.browserslist
-                  })
-                ]
-              }
+        use: [{
+            loader: MiniCssExtractPlugin.loader,
+          },
+          {
+            loader: "css-loader",
+            options: {
+              importLoaders: 1
             }
-          ]
-        })
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              plugins: [
+                autoprefixer({
+                  browsers: pkg.browserslist
+                })
+              ]
+            }
+          }
+        ]
       },
       {
         test: /\.less$/,
         exclude: /node_modules/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: [{
-              loader: "css-loader"
-            },
-            {
-              loader: "postcss-loader",
-              options: {
-                plugins: [
-                  autoprefixer({
-                    browsers: pkg.browserslist
-                  })
-                ]
-              }
-            },
-            {
-              loader: "less-loader"
-            },
-          ]
-        })
+        use: [{
+            loader: MiniCssExtractPlugin.loader,
+          },
+          {
+            loader: "css-loader"
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              plugins: [
+                autoprefixer({
+                  browsers: pkg.browserslist
+                })
+              ]
+            }
+          },
+          {
+            loader: "less-loader"
+          },
+        ]
       },
       {
         test: /\.js$/,
@@ -139,7 +142,6 @@ const config = {
         use: {
           loader: 'babel-loader',
           options: {
-            plugins: ['lodash'],
             presets: [
               [
                 'env',
@@ -156,10 +158,6 @@ const config = {
         }
       },
       {
-        test: /\.html$/,
-        loader: 'html-loader'
-      },
-      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
@@ -167,7 +165,6 @@ const config = {
             js: {
               loader: 'babel-loader',
               options: {
-                plugins: ['lodash'],
                 presets: [
                   [
                     'env',
@@ -207,30 +204,49 @@ const config = {
     ]
   },
 
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      maxInitialRequests: 4,
+      cacheGroups: {
+        default: false,
+        common: () => ({
+          priority: 20,
+          name: 'main',
+          chunks: 'initial',
+          minChunks: autoEntriesCount * 0.9,
+        }),
+        vendors: {
+          priority: 10,
+          chunks: 'async',
+          test: /[\\/](node_modules|vendor[\\/]assets[\\/]javascripts)[\\/]/,
+        },
+        commons: {
+          chunks: 'all',
+          minChunks: 2,
+          reuseExistingChunk: true,
+        },
+      }
+    }
+  },
+
   plugins: [
+    new AssetsWebpackPlugin({
+      filename: 'manifest.json',
+      path: resolve('public/assets'),
+      prettyPrint: true
+    }),
     new CopyWebpackPlugin([{
       from: resolve('src/assets/images'),
       to: resolve('public/assets/images')
     }]),
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: IS_PROD ? 'css/[name].[contenthash].css' : '[name].css'
     }),
-    new LodashModuleReplacementPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendors',
-      minChunks(module) {
-        // any required modules inside node_modules are extracted to vendor
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(path.join(__dirname, '../node_modules')) === 0
-        );
-      }
-    })
   ]
 };
 
@@ -249,31 +265,6 @@ if (!IS_PROD) {
 if (IS_PROD) {
   config.devtool = 'source-map';
   config.plugins.push(
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        unused: true,
-        dead_code: true,
-        warnings: false
-      },
-      sourceMap: true
-    }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new AssetsWebpackPlugin({
-      filename: 'manifest.json',
-      path: resolve('public/assets'),
-      prettyPrint: true
-    }),
-    // extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      chunks: ['vendors']
-    }),
     new CompressionPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
