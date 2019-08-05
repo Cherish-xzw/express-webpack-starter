@@ -21,24 +21,24 @@ function resolve(dir) {
 
 let autoEntriesCount = 0;
 let watchAutoEntries = [];
-const defaultEntries = ['babel-polyfill', './main.js'];
+const defaultEntries = ['./main.ts'];
 
 function generateEntries() {
   // generate automatic entry points
   const autoEntries = {};
   const autoEntriesMap = {};
-  const pageEntries = glob.sync('pages/**/index.js', {
+  const pageEntries = glob.sync('pages/**/index.ts', {
     cwd: path.join(ROOT_PATH, 'src/assets/javascripts'),
   });
   watchAutoEntries = [path.join(ROOT_PATH, 'src/assets/javascripts/pages/')];
 
-  function generateAutoEntries(path, prefix = '.') {
-    const chunkPath = path.replace(/\/index\.js$/, '');
+  function generateAutoEntries(p, prefix = '.') {
+    const chunkPath = p.replace(/\/index\.ts$/, '');
     const chunkName = chunkPath.replace(/\//g, '.');
-    autoEntriesMap[chunkName] = `${prefix}/${path}`;
+    autoEntriesMap[chunkName] = `${prefix}/${p}`;
   }
 
-  pageEntries.forEach(path => generateAutoEntries(path));
+  pageEntries.forEach(p => generateAutoEntries(p));
 
   const autoEntryKeys = Object.keys(autoEntriesMap);
   autoEntriesCount = autoEntryKeys.length;
@@ -81,7 +81,7 @@ const config = {
     alias: {
       vue$: "vue/dist/vue.esm.js"
     },
-    extensions: ['.js', '.vue', '.json']
+    extensions: ['.ts', '.js', '.vue', '.json']
   },
 
   module: {
@@ -158,6 +158,37 @@ const config = {
         }
       },
       {
+        test: /\.ts$/,
+        include: [
+          resolve('src/assets'),
+        ],
+        use: {
+          loader: 'ts-loader',
+          options: {
+            "compilerOptions": {
+              "target": "es5",
+              "module": "esnext",
+              "strict": true,
+              "jsx": "preserve",
+              "importHelpers": true,
+              "moduleResolution": "node",
+              "experimentalDecorators": true,
+              "allowSyntheticDefaultImports": true,
+              "sourceMap": true,
+              "types": [
+                "webpack-env"
+              ],
+              "lib": [
+                "esnext",
+                "dom",
+                "dom.iterable",
+                "scripthost"
+              ]
+            }
+          }
+        }
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
@@ -177,6 +208,31 @@ const config = {
                   'stage-2',
                   'react'
                 ]
+              }
+            },
+            ts: {
+              loader: 'ts-loader',
+              options: {
+                "compilerOptions": {
+                  "target": "es5",
+                  "module": "esnext",
+                  "strict": true,
+                  "jsx": "preserve",
+                  "importHelpers": true,
+                  "moduleResolution": "node",
+                  "experimentalDecorators": true,
+                  "allowSyntheticDefaultImports": true,
+                  "sourceMap": true,
+                  "types": [
+                    "webpack-env"
+                  ],
+                  "lib": [
+                    "esnext",
+                    "dom",
+                    "dom.iterable",
+                    "scripthost"
+                  ]
+                }
               }
             }
           }
