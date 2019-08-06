@@ -8,8 +8,8 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const autoprefixer = require("autoprefixer");
-// const vuxLoader = require('vux-loader');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const tsImportPluginFactory = require('ts-import-plugin');
 const pkg = require('../package.json');
 
 const IS_PROD = process.env.NODE_ENV === 'production';
@@ -166,6 +166,16 @@ const config = {
           loader: 'ts-loader',
           options: {
             appendTsSuffixTo: [/\.vue$/],
+            transpileOnly: true,
+            getCustomTransformers: () => ({
+              before: [
+                tsImportPluginFactory({
+                  libraryName: 'vant',
+                  libraryDirectory: 'es',
+                  style: true
+                })
+              ]
+            }),
             "compilerOptions": {
               "target": "es5",
               "module": "esnext",
@@ -191,53 +201,7 @@ const config = {
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: {
-            js: {
-              loader: 'babel-loader',
-              options: {
-                presets: [
-                  [
-                    'env',
-                    {
-                      targets: {
-                        browsers: pkg.browserslist
-                      }
-                    }
-                  ],
-                  'stage-2',
-                  'react'
-                ]
-              }
-            },
-            ts: {
-              loader: 'ts-loader',
-              options: {
-                "compilerOptions": {
-                  "target": "es5",
-                  "module": "esnext",
-                  "strict": true,
-                  "jsx": "preserve",
-                  "importHelpers": true,
-                  "moduleResolution": "node",
-                  "experimentalDecorators": true,
-                  "allowSyntheticDefaultImports": true,
-                  "sourceMap": true,
-                  "types": [
-                    "webpack-env"
-                  ],
-                  "lib": [
-                    "esnext",
-                    "dom",
-                    "dom.iterable",
-                    "scripthost"
-                  ]
-                }
-              }
-            }
-          }
-        }
+        loader: 'vue-loader'
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
