@@ -6,10 +6,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const AssetsWebpackPlugin = require('assets-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-const {
-  BundleAnalyzerPlugin
-} = require("webpack-bundle-analyzer");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const autoprefixer = require("autoprefixer");
+// const vuxLoader = require('vux-loader');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const pkg = require('../package.json');
 
 const IS_PROD = process.env.NODE_ENV === 'production';
@@ -165,6 +165,7 @@ const config = {
         use: {
           loader: 'ts-loader',
           options: {
+            appendTsSuffixTo: [/\.vue$/],
             "compilerOptions": {
               "target": "es5",
               "module": "esnext",
@@ -292,6 +293,8 @@ const config = {
       path: resolve('public/assets'),
       prettyPrint: true
     }),
+    // enable vue-loader to use existing loader rules for other module types
+    new VueLoaderPlugin(),
     new CopyWebpackPlugin([{
       from: resolve('src/assets/images'),
       to: resolve('public/assets/images')

@@ -1,0 +1,40 @@
+<template>
+  <div class="home text-center">
+    <i class="logo"></i>
+    <h2>Essential Links</h2>
+    <p>
+      <a
+        href="https://webpack.js.org/"
+        target="_blank"
+      >Webpack</a>
+      <a
+        href="http://expressjs.com/"
+        target="_blank"
+      >Express</a>
+    </p>
+    <h2>Learn More</h2>
+    <a href="about">About</a>
+    <form
+      action="api/login"
+      method="post"
+    >
+      <label>username: </label>
+      <input
+        type="text"
+        name="username"
+      />
+      <label>password: </label>
+      <input
+        type="password"
+        name="password"
+      />
+      <button>submit</button>
+    </form>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue';
+export default Vue.extend({});
+</script>
+
